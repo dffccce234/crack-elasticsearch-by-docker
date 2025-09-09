@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: |
+        sudo mkdir -p /mnt/workdir
+        sudo chown $USER:$GROUPS /mnt/workdir
+        cd /mnt/workdir
+        git clone https://github.com/dffccce234/crack-elasticsearch-by-docker.git
+        cd crack-elasticsearch-by-docker
+        version=8.6.0
+        echo "version=$version" >> $GITHUB_ENV
+        sudo bash crack.sh $version
+        
+    - name: Upload binary directory
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: x-pack-core-{{ env.version }}.crack.jar
+        path: /mnt/workdir/crack-elasticsearch-by-docker/output/x-pack-core-{{ env.version }}.crack.jar
