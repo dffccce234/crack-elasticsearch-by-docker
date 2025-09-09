@@ -23,7 +23,7 @@ jobs:
         cd crack-elasticsearch-by-docker
         version=8.6.0
         echo "version=$version" >> $GITHUB_ENV
-        sudo bash crack.sh $version
+        sudo bash crack.sh 8.6.0
         
     - name: Upload binary directory
       uses: actions/upload-artifact@main
