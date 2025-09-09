@@ -1,6 +1,6 @@
 ARG VERSION
 
-FROM elasticsearch:${VERSION} AS baseline
+FROM elasticsearch:8.6.0 AS baseline
 
 FROM openjdk:17-jdk-buster
 
